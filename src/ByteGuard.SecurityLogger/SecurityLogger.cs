@@ -506,6 +506,133 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// Authorization fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        params object?[] args)
+    {
+        logger.LogAuthzFail(message, userId, resource, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Authorization fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var @event = $"{LoggingVocabulary.AuthzFail}:{userId},{resource}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, @event, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Authorization change.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="from">Original authorization.</param>
+    /// <param name="to">New authorization.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzChange(
+        this ILogger logger,
+        string message,
+        string userId,
+        string from,
+        string to,
+        params object?[] args)
+    {
+        logger.LogAuthzChange(message, userId, from, to, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Authorization change.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="from">Original authorization.</param>
+    /// <param name="to">New authorization.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzChange(
+        this ILogger logger,
+        string message,
+        string userId,
+        string from,
+        string to,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var @event = $"{LoggingVocabulary.AuthzChange}:{userId},{from},{to}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, @event, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Authorization admin event.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="event">Event description.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzAdmin(
+        this ILogger logger,
+        string message,
+        string userId,
+        string @event,
+        params object?[] args)
+    {
+        logger.LogAuthzAdmin(message, userId, @event, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Authorization admin event.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="event">Event description.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogAuthzAdmin(
+        this ILogger logger,
+        string message,
+        string userId,
+        string @event,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.AuthzChange}:{userId},{@event}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
