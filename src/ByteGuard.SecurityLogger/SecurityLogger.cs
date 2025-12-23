@@ -626,7 +626,81 @@ public static class SecurityLoggerExtensions
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.AuthzChange}:{userId},{@event}";
+        var evt = $"{LoggingVocabulary.AuthzAdmin}:{userId},{@event}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Decryption failure.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogCryptDecryptFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogCryptDecryptFail(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Decryption failure.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogCryptDecryptFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.CryptDecryptFail}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Encryption failure.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogCryptEncryptFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogCryptEncryptFail(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Encryption failure.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogCryptEncryptFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.CryptEncryptFail}:{userId}";
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
