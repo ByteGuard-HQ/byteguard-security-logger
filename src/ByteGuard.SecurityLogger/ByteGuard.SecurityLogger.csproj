@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <Authors>ByteGuard Contributors, detilium</Authors>
+        <Description>OWASP Logging Vocabulary for .NET — ILogger extension methods that emit consistent, structured security events across any logging provider (Serilog, NLog, etc.)..</Description>
+        <PackageProjectUrl>https://github.com/ByteGuard-HQ/byteguard-security-logger</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ByteGuard-HQ/byteguard-security-logger</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>byteguard security logger application-security appsec owasp vocabulary</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+        <Copyright>Copyright © ByteGuard Contributors</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\assets\icon.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>
