@@ -3,39 +3,35 @@ using Microsoft.Extensions.Logging;
 namespace ByteGuard.SecurityLogger;
 
 /// <summary>
-/// ILogger extensions for input events.
+/// Security logger functionality for input events.
 /// </summary>
-public static class InputLoggerExtensions
+public partial class SecurityLogger
 {
     /// <summary>
     /// Record an input validation failed event.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="fields">Invalid fields.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogInputValidationFailed(
-        this ILogger logger,
+    public void LogInputValidationFailed(
         string message,
         IEnumerable<string>? fields,
         string? userId,
         params object?[] args)
     {
-        logger.LogInputValidationFailed(message, fields, userId, new SecurityEventMetadata(), args);
+        LogInputValidationFailed(message, fields, userId, new SecurityEventMetadata(), args);
     }
 
     /// <summary>
     /// Record an input validation failed event.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="fields">Invalid fields.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="metadata">Security event metadata.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogInputValidationFailed(
-        this ILogger logger,
+    public void LogInputValidationFailed(
         string message,
         IEnumerable<string>? fields,
         string? userId,
@@ -49,38 +45,34 @@ public static class InputLoggerExtensions
         var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationFailed, commaSeparatedFields, userId);
         metadata ??= new SecurityEventMetadata();
 
-        SecurityLoggerExtensions.Log(logger, evt, LogLevel.Warning, message, metadata, args);
+        Log(evt, LogLevel.Warning, message, metadata, args);
     }
 
     /// <summary>
     /// Record a discrete input validation fail.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="field">Invalid field.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogInputValidationDiscreteFail(
-        this ILogger logger,
+    public void LogInputValidationDiscreteFail(
         string message,
         string? field,
         string? userId,
         params object?[] args)
     {
-        logger.LogInputValidationDiscreteFail(message, field, userId, new SecurityEventMetadata(), args);
+        LogInputValidationDiscreteFail(message, field, userId, new SecurityEventMetadata(), args);
     }
 
     /// <summary>
     /// Record a discrete input validation fail.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="field">Invalid field.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="metadata">Security event metadata.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogInputValidationDiscreteFail(
-        this ILogger logger,
+    public void LogInputValidationDiscreteFail(
         string message,
         string? field,
         string? userId,
@@ -90,6 +82,6 @@ public static class InputLoggerExtensions
         var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationDiscreteFail, field, userId);
         metadata ??= new SecurityEventMetadata();
 
-        SecurityLoggerExtensions.Log(logger, evt, LogLevel.Warning, message, metadata, args);
+        Log(evt, LogLevel.Warning, message, metadata, args);
     }
 }

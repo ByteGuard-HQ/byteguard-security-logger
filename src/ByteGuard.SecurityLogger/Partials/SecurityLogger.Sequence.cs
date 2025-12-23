@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 namespace ByteGuard.SecurityLogger;
 
 /// <summary>
-/// ILogger extensions for sequence events.
+/// Security logger functionality for sequence events.
 /// </summary>
-public static class SequenceLoggerExtensions
+public partial class SecurityLogger
 {
     /// <summary>
     /// Record a sequence error (unexpected order of action).
@@ -13,17 +13,15 @@ public static class SequenceLoggerExtensions
     /// <remarks>
     /// Could indicate intentional abuse of the business logic.
     /// </remarks>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogSequenceFail(
-        this ILogger logger,
+    public void LogSequenceFail(
         string message,
         string? userId,
         params object?[] args)
     {
-        logger.LogSequenceFail(message, userId, new SecurityEventMetadata(), args);
+        LogSequenceFail(message, userId, new SecurityEventMetadata(), args);
     }
 
     /// <summary>
@@ -32,13 +30,11 @@ public static class SequenceLoggerExtensions
     /// <remarks>
     /// Could indicate intentional abuse of the business logic.
     /// </remarks>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="metadata">Security event metadata.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogSequenceFail(
-        this ILogger logger,
+    public void LogSequenceFail(
         string message,
         string? userId,
         SecurityEventMetadata metadata,
@@ -47,6 +43,6 @@ public static class SequenceLoggerExtensions
         var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SequenceFail, userId);
         metadata ??= new SecurityEventMetadata();
 
-        SecurityLoggerExtensions.Log(logger, evt, LogLevel.Critical, message, metadata, args);
+        Log(evt, LogLevel.Critical, message, metadata, args);
     }
 }

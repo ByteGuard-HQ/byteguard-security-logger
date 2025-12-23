@@ -3,22 +3,20 @@ using Microsoft.Extensions.Logging;
 namespace ByteGuard.SecurityLogger;
 
 /// <summary>
-/// ILogger extensions for privilege events.
+/// Security logger functionality for privilege events.
 /// </summary>
-public static class PrivilegeLoggerExtensions
+public partial class SecurityLogger
 {
     /// <summary>
     /// Record a permission level change.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="resource">Resource identifier.</param>
     /// <param name="fromLevel">Original privilege level.</param>
     /// <param name="toLevel">New privilege level.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogPrivilegePermissionsChanged(
-        this ILogger logger,
+    public void LogPrivilegePermissionsChanged(
         string message,
         string? userId,
         string? resource,
@@ -26,13 +24,12 @@ public static class PrivilegeLoggerExtensions
         string? toLevel,
         params object?[] args)
     {
-        logger.LogPrivilegePermissionsChanged(message, userId, resource, fromLevel, toLevel, new SecurityEventMetadata(), args);
+        LogPrivilegePermissionsChanged(message, userId, resource, fromLevel, toLevel, new SecurityEventMetadata(), args);
     }
 
     /// <summary>
     /// Record a permission level change.
     /// </summary>
-    /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
     /// <param name="userId">User identifier.</param>
     /// <param name="resource">Resource identifier.</param>
@@ -40,8 +37,7 @@ public static class PrivilegeLoggerExtensions
     /// <param name="toLevel">New privilege level.</param>
     /// <param name="metadata">Security event metadata.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
-    public static void LogPrivilegePermissionsChanged(
-        this ILogger logger,
+    public void LogPrivilegePermissionsChanged(
         string message,
         string? userId,
         string? resource,
@@ -53,6 +49,6 @@ public static class PrivilegeLoggerExtensions
         var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.PrivilegePermissionsChanged, userId, resource, fromLevel, toLevel);
         metadata ??= new SecurityEventMetadata();
 
-        SecurityLoggerExtensions.Log(logger, evt, LogLevel.Warning, message, metadata, args);
+        Log(evt, LogLevel.Warning, message, metadata, args);
     }
 }
