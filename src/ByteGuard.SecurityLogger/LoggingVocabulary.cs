@@ -52,12 +52,12 @@ internal static class LoggingVocabulary
     internal const string SessionExpired = "session_expired";
     internal const string SessionUseAfterExpire = "session_use_after_expire";
 
-    internal const string SystemStartup = "sys_startup";
-    internal const string SystemShutdown = "sys_shutdown";
-    internal const string SystemRestart = "sys_restart";
-    internal const string SystemCrash = "sys_crash";
-    internal const string SystemMonitorDisabled = "sys_monitor_disabled";
-    internal const string SystemMonitorEnabled = "sys_monitor_enabled";
+    internal const string SysStartup = "sys_startup";
+    internal const string SysShutdown = "sys_shutdown";
+    internal const string SysRestart = "sys_restart";
+    internal const string SysCrash = "sys_crash";
+    internal const string SysMonitorDisabled = "sys_monitor_disabled";
+    internal const string SysMonitorEnabled = "sys_monitor_enabled";
 
     internal const string UserCreated = "user_created";
     internal const string UserUpdated = "user_updated";

@@ -1637,6 +1637,236 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// System startup.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysStartup(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogSysStartup(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System startup.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysStartup(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysStartup}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// System shutdown.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysShutdown(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogSysShutdown(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System shutdown.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysShutdown(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysShutdown}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// System restart.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysRestart(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogSysRestart(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System restart.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysRestart(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysRestart}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// System crash.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysCrash(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogSysCrash(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System crash.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysCrash(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysCrash}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// System monitor disabled.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="monitor">Monitor name.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysMonitorDisabled(
+        this ILogger logger,
+        string message,
+        string userId,
+        string monitor,
+        params object?[] args)
+    {
+        logger.LogSysMonitorDisabled(message, userId, monitor, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System monitor disabled.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="monitor">Monitor name.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysMonitorDisabled(
+        this ILogger logger,
+        string message,
+        string userId,
+        string monitor,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysMonitorDisabled}:{userId},{monitor}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// System monitor enabled.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="monitor">Monitor name.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysMonitorEnabled(
+        this ILogger logger,
+        string message,
+        string userId,
+        string monitor,
+        params object?[] args)
+    {
+        logger.LogSysMonitorEnabled(message, userId, monitor, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// System monitor enabled.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="monitor">Monitor name.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSysMonitorEnabled(
+        this ILogger logger,
+        string message,
+        string userId,
+        string monitor,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SysMonitorEnabled}:{userId},{monitor}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
