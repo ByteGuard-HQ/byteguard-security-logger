@@ -1,4 +1,4 @@
-namespace ByteGuard.SecurityLogger;
+namespace ByteGuard.SecurityLogger.Enrichers;
 
 internal static class PropertiesEnricher
 {

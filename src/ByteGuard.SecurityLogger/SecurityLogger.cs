@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ByteGuard.SecurityLogger.Enrichers;
 
 namespace ByteGuard.SecurityLogger;
 
@@ -17,7 +18,7 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginSuccess(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogAuthnLoginSuccess(message, userId, new SecurityEventMetadata(), args);
@@ -34,11 +35,11 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginSuccess(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var @event = $"{LoggingVocabulary.AuthnLoginSuccess}:{userId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnLoginSuccess, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Information, message, metadata, args);
@@ -55,8 +56,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginSuccessAfterFail(
         this ILogger logger,
         string message,
-        string userId,
-        int retries,
+        string? userId,
+        int? retries,
         params object?[] args)
     {
         logger.LogAuthnLoginSuccessAfterFail(message, userId, retries, new SecurityEventMetadata(), args);
@@ -74,12 +75,12 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginSuccessAfterFail(
         this ILogger logger,
         string message,
-        string userId,
-        int retries,
+        string? userId,
+        int? retries,
         SecurityEventMetadata? metadata,
         params object?[] args)
     {
-        var @event = $"{LoggingVocabulary.AuthnLoginSuccessAfterFail}:{userId}, {retries}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnLoginSuccessAfterFail, userId, retries?.ToString());
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Information, message, metadata, args);
@@ -93,7 +94,7 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogAuthnLoginFail(message, userId, new SecurityEventMetadata(), args);
@@ -110,13 +111,13 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnLoginFail}:{userId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnLoginFail, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Warning, message, metadata, args);
@@ -133,8 +134,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginFailMax(
         this ILogger logger,
         string message,
-        string userId,
-        int maxLimit,
+        string? userId,
+        int? maxLimit,
         params object?[] args)
     {
         logger.LogAuthnLoginFailMax(message, userId, maxLimit, new SecurityEventMetadata(), args);
@@ -152,14 +153,14 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginFailMax(
         this ILogger logger,
         string message,
-        string userId,
-        int maxLimit,
+        string? userId,
+        int? maxLimit,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId, maxLimit]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnLoginFailMax}:{userId},{maxLimit}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnLoginFailMax, userId, maxLimit?.ToString());
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Warning, message, metadata, args);
@@ -176,8 +177,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginLock(
         this ILogger logger,
         string message,
-        string userId,
-        string reason,
+        string? userId,
+        string? reason,
         params object?[] args)
     {
         logger.LogAuthnLoginLock(message, userId, reason, new SecurityEventMetadata(), args);
@@ -195,14 +196,14 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnLoginLock(
         this ILogger logger,
         string message,
-        string userId,
-        string reason,
+        string? userId,
+        string? reason,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId, reason]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnLoginLock}:{userId},{reason}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnLoginLock, userId, reason);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Warning, message, metadata, args);
@@ -218,7 +219,7 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnPasswordChange(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogAuthnPasswordChange(message, userId, new SecurityEventMetadata(), args);
@@ -235,13 +236,13 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnPasswordChange(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnPasswordChange}:{userId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnPasswordChange, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Information, message, metadata, args);
@@ -257,7 +258,7 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnPasswordChangeFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogAuthnPasswordChangeFail(message, userId, new SecurityEventMetadata(), args);
@@ -274,13 +275,13 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnPasswordChangeFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnPasswordChangeFail}:{userId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnPasswordChangeFail, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Critical, message, metadata, args);
@@ -298,9 +299,9 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnImpossibleTravel(
         this ILogger logger,
         string message,
-        string userId,
-        string regionOne,
-        string regionTwo,
+        string? userId,
+        string? regionOne,
+        string? regionTwo,
         params object?[] args)
     {
         logger.LogAuthnImpossibleTravel(message, userId, regionOne, regionTwo, new SecurityEventMetadata(), args);
@@ -319,15 +320,15 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnImpossibleTravel(
         this ILogger logger,
         string message,
-        string userId,
-        string regionOne,
-        string regionTwo,
+        string? userId,
+        string? regionOne,
+        string? regionTwo,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId, regionOne, regionTwo]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnImpossibleTravel}:{userId},{regionOne},{regionTwo}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnImpossibleTravel, userId, regionOne, regionTwo);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Critical, message, metadata, args);
@@ -344,8 +345,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenCreated(
         this ILogger logger,
         string message,
-        string userId,
-        IEnumerable<string> entitlements,
+        string? userId,
+        IEnumerable<string>? entitlements,
         params object?[] args)
     {
         logger.LogAuthnTokenCreated(message, userId, entitlements, new SecurityEventMetadata(), args);
@@ -363,8 +364,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenCreated(
         this ILogger logger,
         string message,
-        string userId,
-        IEnumerable<string> entitlements,
+        string? userId,
+        IEnumerable<string>? entitlements,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
@@ -372,9 +373,7 @@ public static class SecurityLoggerExtensions
             ? string.Join(", ", entitlements)
             : null;
 
-        args = args.Concat([userId, commaSeparatedEntitlements]).ToArray();
-
-        var @event = $"{LoggingVocabulary.AuthnTokenCreated}:{userId},{commaSeparatedEntitlements}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnTokenCreated, userId, commaSeparatedEntitlements);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Information, message, metadata, args);
@@ -391,8 +390,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenRevoked(
         this ILogger logger,
         string message,
-        string userId,
-        string tokenId,
+        string? userId,
+        string? tokenId,
         params object?[] args)
     {
         logger.LogAuthnTokenRevoked(message, userId, tokenId, new SecurityEventMetadata(), args);
@@ -410,14 +409,14 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenRevoked(
         this ILogger logger,
         string message,
-        string userId,
-        string tokenId,
+        string? userId,
+        string? tokenId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId, tokenId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnTokenRevoked}:{userId},{tokenId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnTokenRevoked, userId, tokenId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Information, message, metadata, args);
@@ -434,8 +433,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenReuse(
         this ILogger logger,
         string message,
-        string userId,
-        string tokenId,
+        string? userId,
+        string? tokenId,
         params object?[] args)
     {
         logger.LogAuthnTokenReuse(message, userId, tokenId, new SecurityEventMetadata(), args);
@@ -453,14 +452,14 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenReuse(
         this ILogger logger,
         string message,
-        string userId,
-        string tokenId,
+        string? userId,
+        string? tokenId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId, tokenId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnTokenReuse}:{userId},{tokenId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnTokenReuse, userId, tokenId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Critical, message, metadata, args);
@@ -476,7 +475,7 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenDelete(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogAuthnTokenDelete(message, userId, new SecurityEventMetadata(), args);
@@ -493,13 +492,13 @@ public static class SecurityLoggerExtensions
     public static void LogAuthnTokenDelete(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
         args = args.Concat([userId]).ToArray();
 
-        var @event = $"{LoggingVocabulary.AuthnTokenReuse}:{userId}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnTokenDelete, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Warning, message, metadata, args);
@@ -516,8 +515,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzFail(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         params object?[] args)
     {
         logger.LogAuthzFail(message, userId, resource, new SecurityEventMetadata(), args);
@@ -535,12 +534,12 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzFail(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var @event = $"{LoggingVocabulary.AuthzFail}:{userId},{resource}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthzFail, userId, resource);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Critical, message, metadata, args);
@@ -558,9 +557,9 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzChange(
         this ILogger logger,
         string message,
-        string userId,
-        string from,
-        string to,
+        string? userId,
+        string? from,
+        string? to,
         params object?[] args)
     {
         logger.LogAuthzChange(message, userId, from, to, new SecurityEventMetadata(), args);
@@ -579,13 +578,13 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzChange(
         this ILogger logger,
         string message,
-        string userId,
-        string from,
-        string to,
+        string? userId,
+        string? from,
+        string? to,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var @event = $"{LoggingVocabulary.AuthzChange}:{userId},{from},{to}";
+        var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthzChange, userId, from, to);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, @event, LogLevel.Warning, message, metadata, args);
@@ -602,8 +601,8 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzAdmin(
         this ILogger logger,
         string message,
-        string userId,
-        string @event,
+        string? userId,
+        string? @event,
         params object?[] args)
     {
         logger.LogAuthzAdmin(message, userId, @event, new SecurityEventMetadata(), args);
@@ -621,12 +620,12 @@ public static class SecurityLoggerExtensions
     public static void LogAuthzAdmin(
         this ILogger logger,
         string message,
-        string userId,
-        string @event,
+        string? userId,
+        string? @event,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.AuthzAdmin}:{userId},{@event}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthzAdmin, userId, @event);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -642,7 +641,7 @@ public static class SecurityLoggerExtensions
     public static void LogCryptDecryptFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogCryptDecryptFail(message, userId, new SecurityEventMetadata(), args);
@@ -659,11 +658,11 @@ public static class SecurityLoggerExtensions
     public static void LogCryptDecryptFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.CryptDecryptFail}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.CryptDecryptFail, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -679,7 +678,7 @@ public static class SecurityLoggerExtensions
     public static void LogCryptEncryptFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogCryptEncryptFail(message, userId, new SecurityEventMetadata(), args);
@@ -696,11 +695,11 @@ public static class SecurityLoggerExtensions
     public static void LogCryptEncryptFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.CryptEncryptFail}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.CryptEncryptFail, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -717,8 +716,8 @@ public static class SecurityLoggerExtensions
     public static void LogExcessRateLimitExceeded(
         this ILogger logger,
         string message,
-        string userId,
-        int max,
+        string? userId,
+        int? max,
         params object?[] args)
     {
         logger.LogExcessRateLimitExceeded(message, userId, max, new SecurityEventMetadata(), args);
@@ -736,12 +735,12 @@ public static class SecurityLoggerExtensions
     public static void LogExcessRateLimitExceeded(
         this ILogger logger,
         string message,
-        string userId,
-        int max,
+        string? userId,
+        int? max,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.ExcessRateLimitExceeded}:{userId},{max}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.ExcessRateLimitExceeded, userId, max?.ToString());
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -759,9 +758,9 @@ public static class SecurityLoggerExtensions
     public static void LogUploadComplete(
         this ILogger logger,
         string message,
-        string userId,
-        string fileName,
-        string fileType,
+        string? userId,
+        string? fileName,
+        string? fileType,
         params object?[] args)
     {
         logger.LogUploadComplete(message, userId, fileName, fileType, new SecurityEventMetadata(), args);
@@ -780,13 +779,13 @@ public static class SecurityLoggerExtensions
     public static void LogUploadComplete(
         this ILogger logger,
         string message,
-        string userId,
-        string fileName,
-        string fileType,
+        string? userId,
+        string? fileName,
+        string? fileType,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UploadComplete}:{userId},{fileName},{fileType}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UploadComplete, userId, fileName, fileType);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -804,9 +803,9 @@ public static class SecurityLoggerExtensions
     public static void LogUploadStored(
         this ILogger logger,
         string message,
-        string userId,
-        string from,
-        string to,
+        string? userId,
+        string? from,
+        string? to,
         params object?[] args)
     {
         logger.LogUploadStored(message, userId, from, to, new SecurityEventMetadata(), args);
@@ -825,13 +824,13 @@ public static class SecurityLoggerExtensions
     public static void LogUploadStored(
         this ILogger logger,
         string message,
-        string userId,
-        string from,
-        string to,
+        string? userId,
+        string? from,
+        string? to,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UploadStored}:{userId},{from},{to}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UploadStored, userId, from, to);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -851,10 +850,10 @@ public static class SecurityLoggerExtensions
     public static void LogUploadValidation(
         this ILogger logger,
         string message,
-        string userId,
-        string filename,
-        string validationType,
-        string result,
+        string? userId,
+        string? filename,
+        string? validationType,
+        string? result,
         LogLevel level,
         params object?[] args)
     {
@@ -876,15 +875,15 @@ public static class SecurityLoggerExtensions
     public static void LogUploadValidation(
         this ILogger logger,
         string message,
-        string userId,
-        string filename,
-        string validationType,
-        string result,
+        string? userId,
+        string? filename,
+        string? validationType,
+        string? result,
         LogLevel level,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UploadValidation}:{userId},{filename},{validationType}:{result}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UploadValidation, userId, filename, validationType, result);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, level, message, metadata, args);
@@ -901,8 +900,8 @@ public static class SecurityLoggerExtensions
     public static void LogUploadDelete(
         this ILogger logger,
         string message,
-        string userId,
-        string fileId,
+        string? userId,
+        string? fileId,
         params object?[] args)
     {
         logger.LogUploadDelete(message, userId, fileId, new SecurityEventMetadata(), args);
@@ -920,12 +919,12 @@ public static class SecurityLoggerExtensions
     public static void LogUploadDelete(
         this ILogger logger,
         string message,
-        string userId,
-        string fileId,
+        string? userId,
+        string? fileId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UploadDelete}:{userId},{fileId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UploadDelete, userId, fileId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -936,14 +935,14 @@ public static class SecurityLoggerExtensions
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
-    /// <param name="userId">User identifier.</param>
     /// <param name="fields">Invalid fields.</param>
+    /// <param name="userId">User identifier.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
     public static void LogInputValidationFailed(
         this ILogger logger,
         string message,
-        IEnumerable<string> fields,
-        string userId,
+        IEnumerable<string>? fields,
+        string? userId,
         params object?[] args)
     {
         logger.LogInputValidationFailed(message, fields, userId, new SecurityEventMetadata(), args);
@@ -954,15 +953,15 @@ public static class SecurityLoggerExtensions
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
     /// <param name="message">Log message.</param>
-    /// <param name="userId">User identifier.</param>
     /// <param name="fields">Invalid fields.</param>
+    /// <param name="userId">User identifier.</param>
     /// <param name="metadata">Security event metadata.</param>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
     public static void LogInputValidationFailed(
         this ILogger logger,
         string message,
-        string userId,
-        IEnumerable<string> fields,
+        IEnumerable<string>? fields,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
@@ -970,7 +969,7 @@ public static class SecurityLoggerExtensions
             ? string.Join(", ", fields)
             : null;
 
-        var evt = $"{LoggingVocabulary.InputValidationFailed}:{userId},{commaSeparatedFields}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationFailed, commaSeparatedFields, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -987,8 +986,8 @@ public static class SecurityLoggerExtensions
     public static void LogInputValidationDiscreteFail(
         this ILogger logger,
         string message,
-        string field,
-        string userId,
+        string? field,
+        string? userId,
         params object?[] args)
     {
         logger.LogInputValidationDiscreteFail(message, field, userId, new SecurityEventMetadata(), args);
@@ -1006,12 +1005,12 @@ public static class SecurityLoggerExtensions
     public static void LogInputValidationDiscreteFail(
         this ILogger logger,
         string message,
-        string field,
-        string userId,
+        string? field,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.InputValidationDiscreteFail}:{field},{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationDiscreteFail, field, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1028,8 +1027,8 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousExcess404(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
+        string? ipAddress,
+        string? useragent,
         params object?[] args)
     {
         logger.LogMaliciousExcess404(message, ipAddress, useragent, new SecurityEventMetadata(), args);
@@ -1047,12 +1046,12 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousExcess404(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
+        string? ipAddress,
+        string? useragent,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.MaliciousExcess404}:{ipAddress},{useragent}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.MaliciousExcess404, ipAddress, useragent);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1070,9 +1069,9 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousExtraneous(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string inputName,
-        string useragent,
+        string? ipAddress,
+        string? inputName,
+        string? useragent,
         params object?[] args)
     {
         logger.LogMaliciousExtraneous(message, ipAddress, inputName, useragent, new SecurityEventMetadata(), args);
@@ -1091,13 +1090,13 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousExtraneous(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string inputName,
-        string useragent,
+        string? ipAddress,
+        string? inputName,
+        string? useragent,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.MaliciousExtraneous}:{ipAddress},{inputName},{useragent}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.MaliciousExtraneous, ipAddress, inputName, useragent);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1115,9 +1114,9 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousAttackTool(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string toolName,
-        string useragent,
+        string? ipAddress,
+        string? toolName,
+        string? useragent,
         params object?[] args)
     {
         logger.LogMaliciousAttackTool(message, ipAddress, toolName, useragent, new SecurityEventMetadata(), args);
@@ -1136,13 +1135,13 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousAttackTool(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string toolName,
-        string useragent,
+        string? ipAddress,
+        string? toolName,
+        string? useragent,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.MaliciousAttackTool}:{ipAddress},{toolName},{useragent}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.MaliciousAttackTool, ipAddress, toolName, useragent);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1160,9 +1159,9 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousCors(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
-        string referrer,
+        string? ipAddress,
+        string? useragent,
+        string? referrer,
         params object?[] args)
     {
         logger.LogMaliciousCors(message, ipAddress, useragent, referrer, new SecurityEventMetadata(), args);
@@ -1181,13 +1180,13 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousCors(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
-        string referrer,
+        string? ipAddress,
+        string? useragent,
+        string? referrer,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.MaliciousCors}:{ipAddress},{useragent},{referrer}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.MaliciousCors, ipAddress, useragent, referrer);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1204,8 +1203,8 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousDirectReference(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
+        string? ipAddress,
+        string? useragent,
         params object?[] args)
     {
         logger.LogMaliciousDirectReference(message, ipAddress, useragent, new SecurityEventMetadata(), args);
@@ -1223,12 +1222,12 @@ public static class SecurityLoggerExtensions
     public static void LogMaliciousDirectReference(
         this ILogger logger,
         string message,
-        string ipAddress,
-        string useragent,
+        string? ipAddress,
+        string? useragent,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.MaliciousDirectReference}:{ipAddress},{useragent}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.MaliciousDirectReference, ipAddress, useragent);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1247,10 +1246,10 @@ public static class SecurityLoggerExtensions
     public static void LogPrivilegePermissionsChanged(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
-        string fromLevel,
-        string toLevel,
+        string? userId,
+        string? resource,
+        string? fromLevel,
+        string? toLevel,
         params object?[] args)
     {
         logger.LogPrivilegePermissionsChanged(message, userId, resource, fromLevel, toLevel, new SecurityEventMetadata(), args);
@@ -1270,14 +1269,14 @@ public static class SecurityLoggerExtensions
     public static void LogPrivilegePermissionsChanged(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
-        string fromLevel,
-        string toLevel,
+        string? userId,
+        string? resource,
+        string? fromLevel,
+        string? toLevel,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.PrivilegePermissionsChanged}:{userId},{resource},{fromLevel},{toLevel}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.PrivilegePermissionsChanged, userId, resource, fromLevel, toLevel);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1294,8 +1293,8 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveCreate(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         params object?[] args)
     {
         logger.LogSensitiveCreate(message, userId, resource, new SecurityEventMetadata(), args);
@@ -1313,12 +1312,12 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveCreate(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SensitiveCreate}:{userId},{resource}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SensitiveCreate, userId, resource);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1335,8 +1334,8 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveRead(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         params object?[] args)
     {
         logger.LogSensitiveRead(message, userId, resource, new SecurityEventMetadata(), args);
@@ -1354,12 +1353,12 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveRead(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SensitiveRead}:{userId},{resource}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SensitiveRead, userId, resource);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1376,8 +1375,8 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveUpdate(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         params object?[] args)
     {
         logger.LogSensitiveUpdate(message, userId, resource, new SecurityEventMetadata(), args);
@@ -1395,12 +1394,12 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveUpdate(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SensitiveUpdate}:{userId},{resource}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SensitiveUpdate, userId, resource);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1417,8 +1416,8 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveDelete(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         params object?[] args)
     {
         logger.LogSensitiveDelete(message, userId, resource, new SecurityEventMetadata(), args);
@@ -1436,12 +1435,12 @@ public static class SecurityLoggerExtensions
     public static void LogSensitiveDelete(
         this ILogger logger,
         string message,
-        string userId,
-        string resource,
+        string? userId,
+        string? resource,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SensitiveDelete}:{userId},{resource}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SensitiveDelete, userId, resource);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1457,7 +1456,7 @@ public static class SecurityLoggerExtensions
     public static void LogSequenceFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSequenceFail(message, userId, new SecurityEventMetadata(), args);
@@ -1474,11 +1473,11 @@ public static class SecurityLoggerExtensions
     public static void LogSequenceFail(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SequenceFail}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SequenceFail, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1494,7 +1493,7 @@ public static class SecurityLoggerExtensions
     public static void LogSessionCreated(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSessionCreated(message, userId, new SecurityEventMetadata(), args);
@@ -1511,11 +1510,11 @@ public static class SecurityLoggerExtensions
     public static void LogSessionCreated(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SessionCreated}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SessionCreated, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -1531,7 +1530,7 @@ public static class SecurityLoggerExtensions
     public static void LogSessionRenewed(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSessionRenewed(message, userId, new SecurityEventMetadata(), args);
@@ -1548,11 +1547,11 @@ public static class SecurityLoggerExtensions
     public static void LogSessionRenewed(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SessionRenewed}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SessionRenewed, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -1569,8 +1568,8 @@ public static class SecurityLoggerExtensions
     public static void LogSessionExpired(
         this ILogger logger,
         string message,
-        string userId,
-        string reason,
+        string? userId,
+        string? reason,
         params object?[] args)
     {
         logger.LogSessionExpired(message, userId, reason, new SecurityEventMetadata(), args);
@@ -1588,12 +1587,12 @@ public static class SecurityLoggerExtensions
     public static void LogSessionExpired(
         this ILogger logger,
         string message,
-        string userId,
-        string reason,
+        string? userId,
+        string? reason,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SessionExpired}:{userId},{reason}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SessionExpired, userId, reason);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Information, message, metadata, args);
@@ -1609,7 +1608,7 @@ public static class SecurityLoggerExtensions
     public static void LogSessionUseAfterExpire(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSessionUseAfterExpire(message, userId, new SecurityEventMetadata(), args);
@@ -1626,11 +1625,11 @@ public static class SecurityLoggerExtensions
     public static void LogSessionUseAfterExpire(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SessionUseAfterExpire}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SessionUseAfterExpire, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Critical, message, metadata, args);
@@ -1646,7 +1645,7 @@ public static class SecurityLoggerExtensions
     public static void LogSysStartup(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSysStartup(message, userId, new SecurityEventMetadata(), args);
@@ -1663,11 +1662,11 @@ public static class SecurityLoggerExtensions
     public static void LogSysStartup(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysStartup}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysStartup, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1683,7 +1682,7 @@ public static class SecurityLoggerExtensions
     public static void LogSysShutdown(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSysShutdown(message, userId, new SecurityEventMetadata(), args);
@@ -1700,11 +1699,11 @@ public static class SecurityLoggerExtensions
     public static void LogSysShutdown(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysShutdown}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysShutdown, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1720,7 +1719,7 @@ public static class SecurityLoggerExtensions
     public static void LogSysRestart(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSysRestart(message, userId, new SecurityEventMetadata(), args);
@@ -1737,11 +1736,11 @@ public static class SecurityLoggerExtensions
     public static void LogSysRestart(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysRestart}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysRestart, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1757,7 +1756,7 @@ public static class SecurityLoggerExtensions
     public static void LogSysCrash(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         params object?[] args)
     {
         logger.LogSysCrash(message, userId, new SecurityEventMetadata(), args);
@@ -1774,11 +1773,11 @@ public static class SecurityLoggerExtensions
     public static void LogSysCrash(
         this ILogger logger,
         string message,
-        string userId,
+        string? userId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysCrash}:{userId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysCrash, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1795,8 +1794,8 @@ public static class SecurityLoggerExtensions
     public static void LogSysMonitorDisabled(
         this ILogger logger,
         string message,
-        string userId,
-        string monitor,
+        string? userId,
+        string? monitor,
         params object?[] args)
     {
         logger.LogSysMonitorDisabled(message, userId, monitor, new SecurityEventMetadata(), args);
@@ -1814,12 +1813,12 @@ public static class SecurityLoggerExtensions
     public static void LogSysMonitorDisabled(
         this ILogger logger,
         string message,
-        string userId,
-        string monitor,
+        string? userId,
+        string? monitor,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysMonitorDisabled}:{userId},{monitor}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysMonitorDisabled, userId, monitor);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1836,8 +1835,8 @@ public static class SecurityLoggerExtensions
     public static void LogSysMonitorEnabled(
         this ILogger logger,
         string message,
-        string userId,
-        string monitor,
+        string? userId,
+        string? monitor,
         params object?[] args)
     {
         logger.LogSysMonitorEnabled(message, userId, monitor, new SecurityEventMetadata(), args);
@@ -1855,12 +1854,12 @@ public static class SecurityLoggerExtensions
     public static void LogSysMonitorEnabled(
         this ILogger logger,
         string message,
-        string userId,
-        string monitor,
+        string? userId,
+        string? monitor,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.SysMonitorEnabled}:{userId},{monitor}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.SysMonitorEnabled, userId, monitor);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1878,9 +1877,9 @@ public static class SecurityLoggerExtensions
     public static void LogUserCreated(
         this ILogger logger,
         string message,
-        string userId,
-        string newUserId,
-        Dictionary<string, IEnumerable<string>> attributes,
+        string? userId,
+        string? newUserId,
+        Dictionary<string, IEnumerable<string>>? attributes,
         params object?[] args)
     {
         logger.LogUserCreated(message, userId, newUserId, attributes, new SecurityEventMetadata(), args);
@@ -1899,15 +1898,17 @@ public static class SecurityLoggerExtensions
     public static void LogUserCreated(
         this ILogger logger,
         string message,
-        string userId,
-        string newUserId,
-        Dictionary<string, IEnumerable<string>> attributes,
+        string? userId,
+        string? newUserId,
+        Dictionary<string, IEnumerable<string>>? attributes,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var commaSeparatedAttributes = string.Join(",", attributes.Select(kvp => $"{kvp.Key}:{string.Join(",", kvp.Value)}"));
+        var commaSeparatedAttributes = attributes is not null
+            ? string.Join(",", attributes?.Select(kvp => $"{kvp.Key}:{string.Join(",", kvp.Value)}"))
+            : null;
 
-        var evt = $"{LoggingVocabulary.UserCreated}:{userId},{newUserId},{commaSeparatedAttributes}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UserCreated, userId, newUserId, commaSeparatedAttributes);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1925,9 +1926,9 @@ public static class SecurityLoggerExtensions
     public static void LogUserUpdated(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
-        Dictionary<string, IEnumerable<string>> attributes,
+        string? userId,
+        string? onUserId,
+        Dictionary<string, IEnumerable<string>>? attributes,
         params object?[] args)
     {
         logger.LogUserUpdated(message, userId, onUserId, attributes, new SecurityEventMetadata(), args);
@@ -1946,15 +1947,17 @@ public static class SecurityLoggerExtensions
     public static void LogUserUpdated(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
-        Dictionary<string, IEnumerable<string>> attributes,
+        string? userId,
+        string? onUserId,
+        Dictionary<string, IEnumerable<string>>? attributes,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var commaSeparatedAttributes = string.Join(",", attributes.Select(kvp => $"{kvp.Key}:{string.Join(",", kvp.Value)}"));
+        var commaSeparatedAttributes = attributes is not null
+            ? string.Join(",", attributes.Select(kvp => $"{kvp.Key}:{string.Join(",", kvp.Value)}"))
+            : null;
 
-        var evt = $"{LoggingVocabulary.UserUpdated}:{userId},{onUserId},{commaSeparatedAttributes}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UserUpdated, userId, onUserId, commaSeparatedAttributes);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -1971,8 +1974,8 @@ public static class SecurityLoggerExtensions
     public static void LogUserArchived(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
+        string? userId,
+        string? onUserId,
         params object?[] args)
     {
         logger.LogUserArchived(message, userId, onUserId, new SecurityEventMetadata(), args);
@@ -1990,12 +1993,12 @@ public static class SecurityLoggerExtensions
     public static void LogUserArchived(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
+        string? userId,
+        string? onUserId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UserArchived}:{userId},{onUserId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UserArchived, userId, onUserId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
@@ -2012,8 +2015,8 @@ public static class SecurityLoggerExtensions
     public static void LogUserDeleted(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
+        string? userId,
+        string? onUserId,
         params object?[] args)
     {
         logger.LogUserDeleted(message, userId, onUserId, new SecurityEventMetadata(), args);
@@ -2031,12 +2034,12 @@ public static class SecurityLoggerExtensions
     public static void LogUserDeleted(
         this ILogger logger,
         string message,
-        string userId,
-        string onUserId,
+        string? userId,
+        string? onUserId,
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var evt = $"{LoggingVocabulary.UserDeleted}:{userId},{onUserId}";
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.UserDeleted, userId, onUserId);
         metadata ??= new SecurityEventMetadata();
 
         Log(logger, evt, LogLevel.Warning, message, metadata, args);
