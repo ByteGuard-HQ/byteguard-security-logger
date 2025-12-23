@@ -932,6 +932,92 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// Input validation failed.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="fields">Invalid fields.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogInputValidationFailed(
+        this ILogger logger,
+        string message,
+        IEnumerable<string> fields,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogInputValidationFailed(message, fields, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Input validation failed.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="fields">Invalid fields.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogInputValidationFailed(
+        this ILogger logger,
+        string message,
+        string userId,
+        IEnumerable<string> fields,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var commaSeparatedFields = fields is not null
+            ? string.Join(", ", fields)
+            : null;
+
+        var evt = $"{LoggingVocabulary.InputValidationFailed}:{userId},{commaSeparatedFields}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Input validation discrete fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="field">Invalid field.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogInputValidationDiscreteFail(
+        this ILogger logger,
+        string message,
+        string field,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogInputValidationDiscreteFail(message, field, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Input validation discrete fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="field">Invalid field.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogInputValidationDiscreteFail(
+        this ILogger logger,
+        string message,
+        string field,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.InputValidationDiscreteFail}:{field},{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
