@@ -47,9 +47,9 @@ internal static class LoggingVocabulary
 
     internal const string SequenceFail = "sequence_fail";
 
-    internal const string SessionCreate = "session_create";
-    internal const string SessionRenew = "session_renew";
-    internal const string SessionExpire = "session_expire";
+    internal const string SessionCreated = "session_created";
+    internal const string SessionRenewed = "session_renewed";
+    internal const string SessionExpired = "session_expired";
     internal const string SessionUseAfterExpire = "session_use_after_expire";
 
     internal const string SystemStartup = "sys_startup";
