@@ -1018,6 +1018,223 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// Malicious excess 404.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousExcess404(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        params object?[] args)
+    {
+        logger.LogMaliciousExcess404(message, ipAddress, useragent, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Malicious excess 404.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousExcess404(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.MaliciousExcess404}:{ipAddress},{useragent}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Malicious extraneous.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="inputName">Input name.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousExtraneous(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string inputName,
+        string useragent,
+        params object?[] args)
+    {
+        logger.LogMaliciousExtraneous(message, ipAddress, inputName, useragent, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Malicious extraneous.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="inputName">Input name.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousExtraneous(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string inputName,
+        string useragent,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.MaliciousExtraneous}:{ipAddress},{inputName},{useragent}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Malicious attack tool.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="toolName">Tool name.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousAttackTool(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string toolName,
+        string useragent,
+        params object?[] args)
+    {
+        logger.LogMaliciousAttackTool(message, ipAddress, toolName, useragent, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Malicious attack tool.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="toolName">Tool name.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousAttackTool(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string toolName,
+        string useragent,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.MaliciousAttackTool}:{ipAddress},{toolName},{useragent}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Malicious CORS.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="referrer">Referrer.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousCors(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        string referrer,
+        params object?[] args)
+    {
+        logger.LogMaliciousCors(message, ipAddress, useragent, referrer, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Malicious CORS.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="referrer">Referrer.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousCors(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        string referrer,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.MaliciousCors}:{ipAddress},{useragent},{referrer}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Malicious direct reference.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousDirectReference(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        params object?[] args)
+    {
+        logger.LogMaliciousDirectReference(message, ipAddress, useragent, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Malicious direct reference.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="ipAddress">IP address.</param>
+    /// <param name="useragent">User agent.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogMaliciousDirectReference(
+        this ILogger logger,
+        string message,
+        string ipAddress,
+        string useragent,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.MaliciousDirectReference}:{ipAddress},{useragent}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>

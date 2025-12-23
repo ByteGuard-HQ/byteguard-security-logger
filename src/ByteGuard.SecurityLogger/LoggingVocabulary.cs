@@ -32,7 +32,7 @@ internal static class LoggingVocabulary
     internal const string InputValidationFailed = "input_validation_failed";
     internal const string InputValidationDiscreteFail = "input_validation_discrete_fail";
 
-    internal const string MaliciousExcessNotFound = "malicious_excess_404";
+    internal const string MaliciousExcess404 = "malicious_excess_404";
     internal const string MaliciousExtraneous = "malicious_extraneous";
     internal const string MaliciousAttackTool = "malicious_attack_tool";
     internal const string MaliciousCors = "malicious_cors";
