@@ -1284,6 +1284,170 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// Sensitive create.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveCreate(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        params object?[] args)
+    {
+        logger.LogSensitiveCreate(message, userId, resource, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Sensitive create.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveCreate(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SensitiveCreate}:{userId},{resource}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Sensitive read.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveRead(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        params object?[] args)
+    {
+        logger.LogSensitiveRead(message, userId, resource, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Sensitive read.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveRead(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SensitiveRead}:{userId},{resource}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Sensitive update.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveUpdate(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        params object?[] args)
+    {
+        logger.LogSensitiveUpdate(message, userId, resource, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Sensitive update.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveUpdate(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SensitiveUpdate}:{userId},{resource}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
+    /// Sensitive delete.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveDelete(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        params object?[] args)
+    {
+        logger.LogSensitiveDelete(message, userId, resource, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Sensitive delete.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resource">Resource identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSensitiveDelete(
+        this ILogger logger,
+        string message,
+        string userId,
+        string resource,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SensitiveDelete}:{userId},{resource}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Warning, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
