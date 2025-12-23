@@ -38,7 +38,7 @@ internal static class LoggingVocabulary
     internal const string MaliciousCors = "malicious_cors";
     internal const string MaliciousDirectReference = "malicious_direct_reference";
 
-    internal const string PrivilegePermissionChanged = "privilege_permission_changed";
+    internal const string PrivilegePermissionsChanged = "privilege_permissions_changed";
 
     internal const string SensitiveCreate = "sensitive_create";
     internal const string SensitiveRead = "sensitive_read";
