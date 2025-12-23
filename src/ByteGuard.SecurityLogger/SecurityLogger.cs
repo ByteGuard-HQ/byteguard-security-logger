@@ -1448,6 +1448,43 @@ public static class SecurityLoggerExtensions
     }
 
     /// <summary>
+    /// Sequence fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSequenceFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        params object?[] args)
+    {
+        logger.LogSequenceFail(message, userId, new SecurityEventMetadata(), args);
+    }
+
+    /// <summary>
+    /// Sequence fail.
+    /// </summary>
+    /// <param name="logger">ILogger implementation.</param>
+    /// <param name="message">Log message.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="metadata">Security event metadata.</param>
+    /// <param name="args">An object array that contains zero or more objects to format.</param>
+    public static void LogSequenceFail(
+        this ILogger logger,
+        string message,
+        string userId,
+        SecurityEventMetadata metadata,
+        params object?[] args)
+    {
+        var evt = $"{LoggingVocabulary.SequenceFail}:{userId}";
+        metadata ??= new SecurityEventMetadata();
+
+        Log(logger, evt, LogLevel.Critical, message, metadata, args);
+    }
+
+    /// <summary>
     /// Generic log method.
     /// </summary>
     /// <param name="logger">ILogger implementation.</param>
