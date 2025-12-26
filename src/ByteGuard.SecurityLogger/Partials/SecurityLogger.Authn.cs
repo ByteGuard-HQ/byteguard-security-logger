@@ -341,7 +341,7 @@ public partial class SecurityLogger
         params object?[] args)
     {
         var commaSeparatedEntitlements = entitlements is not null
-            ? string.Join(", ", entitlements)
+            ? string.Join(",", entitlements)
             : null;
 
         var @event = EventLabelBuilder.BuildEventString(LoggingVocabulary.AuthnTokenCreated, userId, commaSeparatedEntitlements);

@@ -38,11 +38,11 @@ public partial class SecurityLogger
         SecurityEventMetadata metadata,
         params object?[] args)
     {
-        var commaSeparatedFields = fields is not null
-            ? string.Join(", ", fields)
+        var encapsulatedFields = fields is not null
+            ? $"({string.Join(",", fields)})"
             : null;
 
-        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationFailed, commaSeparatedFields, userId);
+        var evt = EventLabelBuilder.BuildEventString(LoggingVocabulary.InputValidationFailed, encapsulatedFields, userId);
         metadata ??= new SecurityEventMetadata();
 
         Log(evt, LogLevel.Warning, message, metadata, args);

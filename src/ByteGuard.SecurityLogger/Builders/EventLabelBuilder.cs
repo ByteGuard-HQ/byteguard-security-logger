@@ -13,9 +13,14 @@ public static class EventLabelBuilder
     /// <returns>An appropriate event string.</returns>
     public static string BuildEventString(string eventName, params string?[] eventArgs)
     {
-        if (eventArgs.Length == 0)
+        if (eventArgs is null || eventArgs.Length == 0)
             return eventName;
 
-        return $"{eventName}:{string.Join(",", eventArgs)}";
+        var commaSeparatedEventArgs = string.Join(",", eventArgs.Where(arg => !string.IsNullOrEmpty(arg)));
+
+        if (string.IsNullOrWhiteSpace(commaSeparatedEventArgs))
+            return eventName;
+
+        return $"{eventName}:{commaSeparatedEventArgs}";
     }
 }
