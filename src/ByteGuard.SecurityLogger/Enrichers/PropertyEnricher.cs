@@ -1,3 +1,5 @@
+using ByteGuard.SecurityLogger.Configuration;
+
 namespace ByteGuard.SecurityLogger.Enrichers;
 
 internal static class PropertiesEnricher
@@ -7,14 +9,15 @@ internal static class PropertiesEnricher
     /// </summary>
     /// <param name="properties">Properties to populate.</param>
     /// <param name="metadata">Metadata instance.</param>
-    internal static void PopulatePropertiesFromMetadata(Dictionary<string, object?> properties, SecurityEventMetadata? metadata)
+    /// <param name="configuration">Security logger configuration.</param>
+    internal static void PopulatePropertiesFromMetadata(Dictionary<string, object?> properties, SecurityEventMetadata? metadata, SecurityLoggerConfiguration configuration)
     {
         if (metadata is null) return;
 
         if (!string.IsNullOrWhiteSpace(metadata.UserAgent))
             properties.Add("UserAgent", metadata.UserAgent);
 
-        if (!string.IsNullOrWhiteSpace(metadata.SourceIp))
+        if (!string.IsNullOrWhiteSpace(metadata.SourceIp) && !configuration.DisableSourceIpLogging)
             properties.Add("SourceIp", metadata.SourceIp);
 
         if (!string.IsNullOrWhiteSpace(metadata.HostIp))

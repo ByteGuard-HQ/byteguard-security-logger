@@ -41,7 +41,7 @@ public partial class SecurityLogger
             ["Event"] = @event
         };
 
-        PropertiesEnricher.PopulatePropertiesFromMetadata(properties, metadata);
+        PropertiesEnricher.PopulatePropertiesFromMetadata(properties, metadata, _configuration);
 
         using var _ = _logger.BeginScope(properties);
 

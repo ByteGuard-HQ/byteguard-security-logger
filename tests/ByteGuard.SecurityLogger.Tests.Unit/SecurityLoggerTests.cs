@@ -91,7 +91,7 @@ public class SecurityLoggerTests
     {
         // Arrange
         var logger = new FakeLogger<SecurityLogger>();
-        SecurityLoggerConfiguration configuration = new() { AppId = "TestApp" };
+        SecurityLoggerConfiguration configuration = new() { AppId = "TestApp", DisableSourceIpLogging = false };
         SecurityLogger securityLogger = new(logger, configuration);
 
         var expectedMetadata = new SecurityEventMetadata
@@ -140,5 +140,33 @@ public class SecurityLoggerTests
         Assert.Equal(expectedMetadata.Region, ((IReadOnlyDictionary<string, object?>)scope!)["Region"]);
         Assert.Contains("Geo", (IReadOnlyDictionary<string, object?>)scope!);
         Assert.Equal(expectedMetadata.Geo, ((IReadOnlyDictionary<string, object?>)scope!)["Geo"]);
+    }
+
+    [Fact(DisplayName = "Log should not add SourceIp property when DisableSourceIpLogging is true")]
+    public void Log_DisableSourceIpLoggingIsTrue_ShouldNotAddSourceIpProperty()
+    {
+        // Arrange
+        var logger = new FakeLogger<SecurityLogger>();
+        SecurityLoggerConfiguration configuration = new() { AppId = "TestApp", DisableSourceIpLogging = true };
+        SecurityLogger securityLogger = new(logger, configuration);
+
+        var expectedMetadata = new SecurityEventMetadata
+        {
+            SourceIp = "1.1.1.1"
+        };
+
+        // Act
+        securityLogger.Log("TestEvent", LogLevel.Information, "Test message", expectedMetadata);
+
+        // Assert
+        var record = logger.Collector.GetSnapshot().Single();
+        var scopes = record.Scopes;
+        var scope = scopes.FirstOrDefault(scope =>
+        {
+            var dict = scope as IReadOnlyDictionary<string, object?>;
+            return dict != null && dict.ContainsKey("AppId") && dict.ContainsKey("Event");
+        });
+
+        Assert.DoesNotContain("SourceIp", (IReadOnlyDictionary<string, object?>)scope!);
     }
 }
