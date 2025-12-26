@@ -9,4 +9,9 @@ public class SecurityLoggerConfiguration
     /// App identifier.
     /// </summary>
     public string AppId { get; set; } = default!;
+
+    /// <summary>
+    /// Whether to disable logging of source IP addresses. Defaults to <c>true</c>.
+    /// </summary>
+    public bool DisableSourceIpLogging { get; set; } = true;
 }

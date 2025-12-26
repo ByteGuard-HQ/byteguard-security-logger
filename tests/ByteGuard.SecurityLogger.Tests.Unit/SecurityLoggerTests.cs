@@ -29,6 +29,17 @@ public class SecurityLoggerTests
         Assert.Throws<ArgumentNullException>(() => new SecurityLogger(logger, configuration));
     }
 
+    [Fact(DisplayName = "Constructor should throw ArgumentException when SecurityLoggerConfiguration is invalid")]
+    public void Constructor_ThrowsArgumentException_WhenSecurityLoggerConfigurationIsInvalid()
+    {
+        // Arrange
+        ILogger logger = Substitute.For<ILogger>();
+        SecurityLoggerConfiguration configuration = new() { AppId = null! };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => new SecurityLogger(logger, configuration));
+    }
+
     [Fact(DisplayName = "Log should log message with correct values")]
     public void Log_ShouldLogMessageWithCorrectValues()
     {

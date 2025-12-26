@@ -21,6 +21,8 @@ public partial class SecurityLogger
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+        ConfigurationValidator.ThrowIfInvalid(configuration);
     }
 
     /// <summary>
