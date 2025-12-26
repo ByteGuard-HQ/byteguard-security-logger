@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0</TargetFrameworks>
         <Authors>ByteGuard Contributors, detilium</Authors>
-        <Description>OWASP Logging Vocabulary for .NET brings ILogger extension methods that emit consistent, structured security events across any logging provider (Serilog, NLog, etc.).</Description>
+        <Description>OWASP Logging Vocabulary for .NET brings a lightweight ILogger wrapper that emits consistent, structured security events across any logging provider (NLog, Serilog, etc.).</Description>
         <PackageProjectUrl>https://github.com/ByteGuard-HQ/byteguard-security-logger</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ByteGuard-HQ/byteguard-security-logger</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
